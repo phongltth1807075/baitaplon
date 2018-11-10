@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>post-song</title>
+    <style>
+        label{
+            display: inline-block;
+            width: 100px;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        input[type=text],input[type=reset] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        input[type=button],input[type=reset] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        input:hover {
+            opacity: 0.8;
+        }
+
+        .container {
+            padding: 16px;
+        }
+    </style>
+</head>
+<body>
+<form action="" name="register-form">
+    <div>
+        <label>Name</label>
+        <input type="text" name="name" class="form-control">
+    </div>
+    <div>
+        <label>Description</label>
+        <input type="text" name="description" class="form-control">
+    </div>
+    <div>
+        <label>Singer</label>
+        <input type="text" name="singer" class="form-control">
+    </div>
+    <div>
+        <label>Author</label>
+        <input type="text" name="author" class="form-control">
+
+    </div>
+    <div>
+        <label>Thumbnail</label>
+        <input type="text" name="thumbnail" class="form-control">
+    </div>
+    <div>
+        <label>Link</label>
+        <input type="text" name="link" class="form-control">
+    </div>
+    <div>
+        <label></label>
+        <input type="button" value="submit" name="btn-submit" class="form-control">
+        <input type="reset" value="reset" name="reset"  class="form-control">
+    </div>
+</form>
+<script>
+    document.forms['register-form']['btn-submit'].onclick=function () {
+        var txtName = document.forms['register-form']['name'];
+        var txtdescription = document.forms['register-form']['description'];
+        var txtsinger = document.forms['register-form']['singer'];
+        var txtauthor = document.forms['register-form']['author'];
+        var txtthumbnail = document.forms['register-form']['thumbnail'];
+        var txtlink = document.forms['register-form']['link'];
+        var listsong={
+            name: txtName.value,
+            description: txtdescription.value,
+            singer: txtsinger.value,
+            author: txtauthor.value,
+            thumbnail: txtthumbnail.value,
+            link:txtlink.value
+        };
+        var xhlHttpRequest = new XMLHttpRequest();
+        xhlHttpRequest.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 201) {
+                var member = JSON.parse(this.responseText);
+                alert('create song:'+nember.name);
+            }
+        };
+        xhlHttpRequest.open('POST', 'https://2-dot-backup-server-001.appspot.com/_api/v2/songs', true);
+        xhlHttpRequest.setRequestHeader("Content-type", "application/json");
+        xhlHttpRequest.setRequestHeader("Authorization", 'Basic '+localStorage.getItem('my-token'));
+        xhlHttpRequest.send(JSON.stringify(listsong));
+    }
+
+</script>
+</body>
+</html>

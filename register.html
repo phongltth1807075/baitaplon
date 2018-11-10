@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register-form</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        input[type=text], input[type=password],input[type=number],input[type=email] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        input[type=button],input[type=reset] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        input:hover {
+            opacity: 0.8;
+        }
+
+        .container {
+            padding: 16px;
+        }
+    </style>
+</head>
+<body>
+<h1>Register form</h1>
+<div class="container">
+    <form action="" name="register-form">
+        <div class="form-group">
+            <label>First Name</label>
+            <input type="text" name="firstName" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" name="lastName" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Address</label>
+            <input type="text" name="address" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="number" name="phone" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Avatar</label>
+            <input type="text" name="avatar" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Gender</label>
+            <select name="gender">
+                <option value="1">Male</option>
+                <option value="0">Female</option>
+                <option value="2">Other</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Birthday</label>
+            <input type="date" name="birthday" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>&nbsp;</label>
+            <input type="button" name="btn-submit" value="submit" class="form-control">
+            <input type="reset" name="btn-reset" class="form-control">
+        </div>
+    </form>
+</div>
+<script>
+    var REGISTER_API = 'https://2-dot-backup-server-001.appspot.com/_api/v2/members';
+    var btnSubmit = document.forms['register-form']['btn-submit'];
+    if (btnSubmit != null) {
+        btnSubmit.onclick = function () {
+            var txtFirstname = document.forms['register-form']['firstName'];
+            var txtLastname = document.forms['register-form']['lastName'];
+            var txtPassword = document.forms['register-form']['password'];
+            var txtAddress = document.forms['register-form']['address'];
+            var txtPhone = document.forms['register-form']['phone'];
+            var txtAvatar = document.forms['register-form']['avatar'];
+            var selectgender = document.forms['register-form']['gender'];
+            var txtemail = document.forms['register-form']['email'];
+            var dateBirthday = document.forms['register-form']['birthday'];
+            var d = new Date(dateBirthday.value);
+            var myDate = d.getFullYear() + '-' + (d.getMonth() + 1) + '-'
+                + (d.getDate() < 10 ? '0' + d.getDate() : d.getDate());
+            if (txtFirstname != null && txtLastname != null) {
+                var firstname = txtFirstname.value;
+                var lastname = txtLastname.value;
+                var password = txtPassword.value;
+                var address = txtAddress.value;
+                var phone = txtPhone.value;
+                var avatar = txtAvatar.value;
+                var gender = selectgender.value;
+                var email = txtemail.value;
+                var birthday = dateBirthday.value;
+                var jsMember = {
+                    firstName: firstname,
+                    lastName: lastname,
+                    password: password,
+                    address: address,
+                    phone: phone,
+                    avatar: avatar,
+                    gender: gender,
+                    email: email,
+                    birthday: myDate,
+                }
+                var jsonData = JSON.stringify(jsMember);
+                postRegisterData(jsonData);
+            }
+        }
+    }
+    function postRegisterData(jsonData) {
+        var xmlhttp =new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 201){
+                var members = JSON.parse(this.responseText);
+                alert(members.id + '-' + members.firstName);
+            }
+        }
+        xmlhttp.open('POST', REGISTER_API, true);
+        xmlhttp.setRequestHeader("content-type","application/json");
+        xmlhttp.send(jsonData);
+    }
+</script>
+</body>
+</html>
